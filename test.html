@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>byebyebye</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 2rem;
+        background-color: #111;
+        color: #eee;
+        font-family: "Helvetica Neue", sans-serif;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 300;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        background-color: #1a1a1a;
+        border-radius: 12px;
+        padding: 1rem;
+        transition: transform 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border: 1px solid #333;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        border-color: #444;
+      }
+
+      .card img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+      }
+
+      .card .info {
+        font-size: 0.9rem;
+        color: #ccc;
+      }
+
+      .card .title {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>byebyebye</h2>
+    <div class="grid" id="resultados"></div>
+
+    <script>
+      fetch("/api/objekts")
+        .then((res) => res.json())
+        .then((data) => {
+          const container = document.getElementById("resultados");
+          const objetos = data.objekts;
+
+          objetos.forEach((obj) => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+              <img src="${obj.thumbnailImage}" alt="${obj.slug}" />
+              <div class="title">${obj.member}</div>
+              <div class="info">${obj.artist} — ${obj.collectionNo}</div>
+            `;
+
+            container.appendChild(card);
+          });
+        })
+        .catch((err) => console.error("Error al obtener datos:", err));
+    </script>
+  </body>
+</html>
